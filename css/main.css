@@ -270,6 +270,10 @@ p {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.3rem;
   letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: normal;
 }
 #mainNav.navbar-scrolled .navbar-brand,
 #mainNav.navbar-scrolled .nav-link {
@@ -366,12 +370,20 @@ p {
    ============================================= */
 .hero {
   min-height: 100vh;
+  min-height: 100svh;
   margin-top: 0;
   padding-top: 80px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
+}
+
+/* Bootstrap's .vh-100 utility forces a fixed height:100vh !important,
+   which otherwise overrides every min-height tweak below on mobile.
+   We neutralize it here so the breakpoints actually take effect. */
+.hero.vh-100 {
+  height: auto !important;
 }
 
 .hero-background {
@@ -898,18 +910,42 @@ p {
   background: linear-gradient(to top, rgba(26, 79, 113, 0.95) 0%, rgba(26, 79, 113, 0.6) 50%, transparent 100%);
   padding: 50px 30px 30px;
   color: white;
-  transform: translateY(30%);
-  opacity: 0;
-  transition: var(--transition-smooth);
 }
 
-.campus-card:hover .campus-overlay {
+/* En pantallas táctiles no existe :hover, así que el título de cada
+   foto se muestra siempre; el efecto de "revelado" queda solo para
+   dispositivos con mouse real (evita ocultar contenido en mobile). */
+.campus-overlay {
   transform: translateY(0);
   opacity: 1;
+  padding: 16px 18px;
+  background: linear-gradient(to top, rgba(26, 79, 113, 0.92) 0%, rgba(26, 79, 113, 0) 100%);
 }
 
 .campus-overlay h4 {
-  font-size: 1.4rem;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .campus-overlay {
+    padding: 50px 30px 30px;
+    transform: translateY(30%);
+    opacity: 0;
+    transition: var(--transition-smooth);
+  }
+
+  .campus-card:hover .campus-overlay {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .campus-overlay h4 {
+    font-size: 1.4rem;
+  }
+}
+
+.campus-overlay h4 {
   font-weight: 700;
   color: var(--white-pure);
   margin-bottom: 0.5rem;
@@ -1260,6 +1296,211 @@ footer .opacity-50 {
 }
 
 /* =============================================
+   LÍNEA DE TIEMPO HISTÓRICA
+   ============================================= */
+.mini-timeline {
+  position: relative;
+}
+
+.timeline-item .d-flex {
+  align-items: flex-start;
+}
+
+.timeline-year {
+  flex: 0 0 auto;
+  min-width: 64px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--white-pure);
+  background: var(--gradient-gold-teal);
+  border-radius: var(--border-radius-sm);
+  padding: 0.5rem 0.4rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.timeline-content h5 {
+  color: var(--primary-deep-teal);
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+
+.timeline-content p {
+  margin-bottom: 0;
+  font-size: 0.92rem;
+}
+
+.historic-quote {
+  border-left: 4px solid var(--primary-sacred-gold);
+}
+
+.historic-quote p {
+  font-size: 1.05rem;
+  color: var(--text-dark);
+}
+
+.historic-quote .blockquote-footer {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Galería vintage junto a la línea de tiempo */
+.vintage-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.vintage-gallery-grid .gallery-item.large {
+  grid-column: span 2;
+}
+
+.vintage-gallery-grid .gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  display: block;
+}
+
+.vintage-gallery-grid .gallery-item.large img {
+  aspect-ratio: 16 / 9;
+}
+
+/* =============================================
+   NUBE DE VALORES
+   ============================================= */
+.values-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin: 1rem 0 1.5rem;
+}
+
+.value-tag {
+  background: var(--secondary-light-sage);
+  color: var(--primary-deep-teal);
+  padding: 0.5rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* =============================================
+   MAESTRÍAS Y OSCO
+   ============================================= */
+.master-card {
+  background: var(--white-pure);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: var(--transition-smooth);
+}
+
+.master-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+}
+
+.master-card h4 {
+  font-size: 1.15rem;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.master-card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+.osco-special {
+  background: var(--gradient-gold-teal);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.osco-special h3 {
+  color: var(--white-pure);
+}
+
+.osco-special p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.osco-special .badge {
+  color: var(--primary-deep-teal);
+  background: var(--white-pure) !important;
+}
+
+/* Datos rápidos del programa destacado (duración / créditos) */
+.program-stats {
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
+
+.program-stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Progresión Diploma → Bachiller → Licenciatura */
+.progress-steps {
+  display: flex;
+  align-items: flex-start;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.step-number {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--secondary-light-sage);
+  color: var(--primary-deep-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  margin-bottom: 6px;
+}
+
+.step.completed .step-number {
+  background: var(--gradient-gold-warm);
+  color: var(--primary-deep-teal);
+  box-shadow: var(--shadow-gold);
+}
+
+.step-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.step-connector {
+  flex: 0 1 50px;
+  height: 2px;
+  background: var(--secondary-light-sage);
+  margin: 17px 4px 0;
+}
+
+/* =============================================
    RESPONSIVE - MOBILE FIRST
    ============================================= */
 @media (max-width: 1200px) {
@@ -1325,6 +1566,7 @@ footer .opacity-50 {
 
   .hero {
     min-height: 85vh;
+    min-height: 85svh;
     padding-top: 60px;
   }
 
@@ -1386,9 +1628,72 @@ footer .opacity-50 {
   }
 
   .mb-6 { margin-bottom: 3rem !important; }
+
+  /* Línea de tiempo, galería vintage y progresión de niveles */
+  .timeline-year {
+    min-width: 56px;
+    font-size: 1rem;
+    padding: 0.4rem 0.3rem;
+  }
+
+  .vintage-gallery-grid {
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+
+  .step-label {
+    font-size: 0.68rem;
+  }
+
+  .step-connector {
+    flex-basis: 24px;
+    margin-top: 15px;
+  }
+
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+
+  .program-img-wrapper {
+    height: 200px;
+  }
+
+  .master-card {
+    margin-bottom: 1rem;
+  }
+
+  /* En pantallas táctiles, las flechas de Swiper suelen tapar las
+     tarjetas; el deslizamiento táctil y los puntos bastan. */
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 36px;
+    height: 36px;
+    margin-top: -18px;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 576px) {
+  #mainNav .navbar-brand {
+    font-size: 1.05rem;
+    gap: 8px;
+  }
+
+  .logo {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .navbar-brand small {
+    font-size: 0.6rem;
+  }
+
   h1 { font-size: 1.6rem; }
   h2 { font-size: 1.4rem; }
   h3 { font-size: 1.2rem; }
@@ -1397,6 +1702,7 @@ footer .opacity-50 {
 
   .hero {
     min-height: 80vh;
+    min-height: 80svh;
     padding-top: 60px;
   }
 
